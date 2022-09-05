@@ -29,8 +29,9 @@ public class UserController {
     }
 
     @PostMapping
-    public String create(User user) {
-        return "redirect:/users/" + userService.create(user).getId();
+    public String create(User user, String rawPassword) {
+        userService.create(user, rawPassword);
+        return "redirect:/login";
     }
 
     @GetMapping("/registration")

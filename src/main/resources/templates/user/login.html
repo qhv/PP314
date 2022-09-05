@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<form th:action="@{/login}" method="post">
+    <div>
+        <label for="login">Логин:
+            <input id="login" type="text" name="username" required>
+        </label>
+    </div>
+    <div>
+        <label for="password">Пароль:
+            <input id="password" type="password" name="password" required>
+        </label>
+    </div>
+    <div>
+        <button type="submit">Войти</button>
+    </div>
+</form>
+<form action="/users/registration">
+    <div>
+        <button type="submit">Зарегистрироваться</button>
+    </div>
+</form>
+
+</body>
+</html>

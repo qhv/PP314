@@ -5,6 +5,7 @@
     <title>Пользователь</title>
 </head>
 <body>
+<div th:insert="~{fragment :: header}"></div>
 <form th:action="@{/users/{id}/update(id=${user.id})}" method="post" th:object="${user}">
     <div>
         <label for="login">Логин:

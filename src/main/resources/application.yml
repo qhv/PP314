@@ -1,0 +1,21 @@
+logging:
+  level:
+    root: info
+  file:
+    name: alex.log
+    path: /
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: poster
+    password: pass
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        hbm2ddl:
+          auto: validate
+    open-in-view: false

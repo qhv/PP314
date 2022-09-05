@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<form action="/users/registration">
+    <div>
+        <button type="submit">Зарегистрировать нового пользователя</button>
+    </div>
+</form>
+<div th:each="user : ${users}">
+    <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.login}|"></a>
+<!--    <a th:href="@{'/' + ${user.id}}" th:text="|${user.id}. ${user.login}|"></a>-->
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+<form action="/users" method="post" th:object="${user}">
+    <div>
+        <label for="login">Логин:
+            <input id="login" type="text" name="login" th:value="*{login}" required>
+        </label>
+    </div>
+    <div>
+        <label for="firstname">Имя:
+            <input id="firstname" type="text" name="firstName" th:value="*{firstName}" required>
+        </label>
+    </div>
+    <div>
+        <label for="lastname">Фамилия:
+            <input id="lastname" type="text" name="lastName" th:value="*{lastName}" required>
+        </label>
+    </div>
+    <div th:each="role : ${roles}">
+        <input th:id="${role}" type="radio" name="role" th:value="${role}" th:checked="${role.name() == 'USER'}">
+        <label th:for="${role}" th:text="${role}">Role name</label>
+    </div>
+    <div>
+        <button type="submit">Зарегистрировать</button>
+    </div>
+</form>
+</body>
+</html>

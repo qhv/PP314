@@ -1,19 +1,15 @@
 package ru.kata.spring.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.server.ResponseStatusException;
-import ru.kata.spring.model.Role;
-import ru.kata.spring.model.User;
 import ru.kata.spring.service.UserService;
 
+import java.security.Principal;
+
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -23,44 +19,9 @@ public class UserController {
     }
 
     @GetMapping
-    public String findAll(Model model) {
-        model.addAttribute("users", userService.findAll());
-        return "user/users";
-    }
+    public String findUser(Model model, Principal principal) {
+        model.addAttribute("user", userService.findByLogin(principal.getName()));
 
-    @PostMapping
-    public String create(User user, String rawPassword) {
-        userService.create(user, rawPassword);
-        return "redirect:/login";
-    }
-
-    @GetMapping("/registration")
-    public String registration(Model model, User user) {
-        model.addAttribute("user", user);
-        model.addAttribute("roles", Role.values());
-        return "user/registration";
-    }
-
-    @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
-        return userService.findById(id)
-                .map(user -> {
-                    model.addAttribute("user", user);
-                    model.addAttribute("roles", Role.values());
-                    return "user/user";
-                })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-    }
-
-    @PostMapping("/{id}/update")
-    public String update(User user) {
-        userService.update(user);
-        return "redirect:/users/{id}";
-    }
-
-    @PostMapping("/{id}/delete")
-    public String delete(@PathVariable Long id) {
-        if (!userService.delete(id)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        return "redirect:/users";
+        return "user/user";
     }
 }

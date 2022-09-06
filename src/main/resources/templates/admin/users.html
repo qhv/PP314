@@ -6,14 +6,20 @@
 </head>
 <body>
 <div th:insert="~{fragment :: header}"></div>
-<form action="/users/registration">
+<form action="/admin/registration">
     <div>
         <button type="submit">Зарегистрировать нового пользователя</button>
     </div>
 </form>
 <div th:each="user : ${users}">
-    <a th:href="@{'/users/' + ${user.id}}" th:text="|${user.id}. ${user.login}|"></a>
-<!--    <a th:href="@{'/' + ${user.id}}" th:text="|${user.id}. ${user.login}|"></a>-->
+    <div th:object="${user}">
+        <span th:text="*{id}">Id</span>
+        <span th:text="*{login}">Id</span>
+        <span th:text="*{firstName}">Id</span>
+        <span th:text="*{lastName}">Id</span>
+        <span th:text="*{role}">Id</span>
+        <a th:href="@{'/admin/' + ${user.id}}">Редактировать</a>
+    </div>
 </div>
 </body>
 </html>

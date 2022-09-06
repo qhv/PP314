@@ -5,7 +5,8 @@
     <title>Регистрация</title>
 </head>
 <body>
-<form action="/users" method="post" th:object="${user}">
+<div th:insert="~{fragment :: header}"></div>
+<form th:action="@{/admin/registration}" method="post" th:object="${user}">
     <div>
         <label for="login">Логин:
             <input id="login" type="text" name="login" th:value="*{login}" required>

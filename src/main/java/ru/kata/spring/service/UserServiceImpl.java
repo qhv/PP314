@@ -27,6 +27,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
+    @Override public User findByLogin(String login) {
+        return userRepository.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException("Fail to retrieve user: " + login));
+    }
+
     @Override
     public List<User> findAll() {
         return (List<User>) userRepository.findAll();

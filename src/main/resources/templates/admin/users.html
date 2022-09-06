@@ -14,11 +14,13 @@
 <div th:each="user : ${users}">
     <div th:object="${user}">
         <span th:text="*{id}">Id</span>
-        <span th:text="*{login}">Id</span>
-        <span th:text="*{firstName}">Id</span>
-        <span th:text="*{lastName}">Id</span>
-        <span th:text="*{role}">Id</span>
-        <a th:href="@{'/admin/' + ${user.id}}">Редактировать</a>
+        <span th:text="*{login}">Login</span>
+        <span th:text="*{firstName}">First name</span>
+        <span th:text="*{lastName}">Last name</span>
+        <th:block th:each="role : *{roles}">
+            <span th:text="${role.name}">Role name</span>
+        </th:block>
+        <a th:href="@{'/admin/' + *{id}}">Редактировать</a>
     </div>
 </div>
 </body>

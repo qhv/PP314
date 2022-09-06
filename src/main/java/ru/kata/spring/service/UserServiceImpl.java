@@ -4,14 +4,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.model.User;
 import ru.kata.spring.repository.UserRepository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        return (List<User>) userRepository.findAll();
+        return userRepository.findAll();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
                 .map(user -> new org.springframework.security.core.userdetails.User(
                         user.getLogin(),
                         user.getPassword(),
-                        Collections.singleton(user.getRole())
+                        user.getRoles()
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("Fail to retrieve user: " + username));
     }

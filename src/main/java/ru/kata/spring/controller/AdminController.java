@@ -10,16 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import ru.kata.spring.model.Role;
 import ru.kata.spring.model.User;
+import ru.kata.spring.service.RoleService;
 import ru.kata.spring.service.UserService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping
@@ -31,12 +36,12 @@ public class AdminController {
     @GetMapping("/registration")
     public String registration(Model model, User user) {
         model.addAttribute("user", user);
-        model.addAttribute("roles", Role.values());
+        model.addAttribute("roles", roleService.findAll());
         return "admin/registration";
     }
 
     @PostMapping("/registration")
-    public String create(User user, String rawPassword) {
+    public String create(User user, String rawPassword, String role) {
         userService.create(user, rawPassword);
         return "redirect:/admin";
     }
@@ -46,14 +51,14 @@ public class AdminController {
         return userService.findById(id)
                 .map(user -> {
                     model.addAttribute("user", user);
-                    model.addAttribute("roles", Role.values());
+                    model.addAttribute("roles", roleService.findAll());
                     return "admin/user";
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/{id}/update")
-    public String update(User user) {
+    public String update(User user, List<Integer> role) {
         userService.update(user);
         return "redirect:/admin/{id}";
     }

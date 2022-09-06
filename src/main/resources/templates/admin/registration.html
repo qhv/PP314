@@ -6,10 +6,10 @@
 </head>
 <body>
 <div th:insert="~{fragment :: header}"></div>
-<form th:action="@{/admin/registration}" method="post" th:object="${user}">
+<form th:action="@{/admin/registration}" method="post">
     <div>
         <label for="login">Логин:
-            <input id="login" type="text" name="login" th:value="*{login}" required>
+            <input id="login" type="text" name="login" required>
         </label>
     </div>
     <div>
@@ -28,8 +28,8 @@
         </label>
     </div>
     <div th:each="role : ${roles}">
-        <input th:id="${role}" type="radio" name="role" th:value="${role}" th:checked="${role.name() == 'USER'}">
-        <label th:for="${role}" th:text="${role}">Role name</label>
+        <input th:id="${role.name}" type="checkbox" name="role" th:value="${role.id}">
+        <label th:for="${role.name}" th:text="${role.name}">Role name</label>
     </div>
     <div>
         <button type="submit">Зарегистрировать</button>

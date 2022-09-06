@@ -1,6 +1,9 @@
 package ru.kata.spring.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -22,39 +25,44 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    public User(Long id, String login, String firstName, String lastName, Role role) {
-        this.id = id;
-        this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
 
+    public User(Long id, String login, String firstName, String lastName, List<Role> roles) {
+        this.id = id;
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.roles = roles;
+    }
+
+    private void addRole(Role role) {
+        roles.add(role);
+        role.getUsers().add(this);
+    }
+
     public Long getId() {
-        return this.id;
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLogin() {
-        return this.login;
+        return login;
     }
 
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public Role getRole() {
-        return this.role;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -65,70 +73,51 @@ public class User {
         this.password = password;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof User)) return false;
-        final User other = (User) o;
-        if (!other.canEqual((Object) this)) return false;
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
-        final Object this$login = this.getLogin();
-        final Object other$login = other.getLogin();
-        if (this$login == null ? other$login != null : !this$login.equals(other$login)) return false;
-        final Object this$firstName = this.getFirstName();
-        final Object other$firstName = other.getFirstName();
-        if (this$firstName == null ? other$firstName != null : !this$firstName.equals(other$firstName)) return false;
-        final Object this$lastName = this.getLastName();
-        final Object other$lastName = other.getLastName();
-        if (this$lastName == null ? other$lastName != null : !this$lastName.equals(other$lastName)) return false;
-        final Object this$role = this.getRole();
-        final Object other$role = other.getRole();
-        if (this$role == null ? other$role != null : !this$role.equals(other$role)) return false;
-        return true;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
-    protected boolean canEqual(final Object other) {
-        return other instanceof User;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(login, user.login);
     }
 
+    @Override
     public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $id = this.getId();
-        result = result * PRIME + ($id == null ? 43 : $id.hashCode());
-        final Object $login = this.getLogin();
-        result = result * PRIME + ($login == null ? 43 : $login.hashCode());
-        final Object $firstName = this.getFirstName();
-        result = result * PRIME + ($firstName == null ? 43 : $firstName.hashCode());
-        final Object $lastName = this.getLastName();
-        result = result * PRIME + ($lastName == null ? 43 : $lastName.hashCode());
-        final Object $role = this.getRole();
-        result = result * PRIME + ($role == null ? 43 : $role.hashCode());
-        return result;
+        return Objects.hash(login);
     }
 
+    @Override
     public String toString() {
-        return "User(id=" + this.getId() + ", login=" + this.getLogin() + ", firstName=" + this.getFirstName() + ", lastName=" + this.getLastName() + ", role=" + this.getRole() + ")";
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

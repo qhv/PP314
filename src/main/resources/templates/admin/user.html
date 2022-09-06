@@ -23,7 +23,8 @@
         </label>
     </div>
     <div th:each="role : ${roles}">
-        <input th:id="${role.name}" type="checkbox" name="role" th:value="${role}" th:checked="${user.roles.contains(role)}">
+        <input th:id="${role.name}" type="checkbox" name="selectedRoles"
+               th:value="${role.id}" th:checked="${user.roles.contains(role)}">
         <label th:for="${role.name}" th:text="${role.name}">Role name</label>
     </div>
     <div>
@@ -31,7 +32,7 @@
     </div>
 </form>
 <form th:action="@{/admin/{id}/delete(id=${user.id})}" method="post">
-    <button type="submit">Удалить</button>
+    <input type="submit" value="Удалить">
 </form>
 </body>
 </html>

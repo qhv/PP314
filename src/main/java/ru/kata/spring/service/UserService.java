@@ -14,9 +14,9 @@ public interface UserService extends UserDetailsService {
 
     List<User> findAll();
 
-    User create(User user, String rawPassword);
+    User create(User user, String rawPassword, String selectedRoles);
 
-    User update(User user);
+    User update(User user, String selectedRoles);
 
     boolean delete(Long id);
 }

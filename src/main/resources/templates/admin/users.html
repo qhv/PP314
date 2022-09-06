@@ -21,6 +21,10 @@
             <span th:text="${role.name}">Role name</span>
         </th:block>
         <a th:href="@{'/admin/' + *{id}}">Редактировать</a>
+
+        <form th:action="@{/admin/{id}/delete(id=*{id})}" method="post">
+            <button type="submit">Удалить</button>
+        </form>
     </div>
 </div>
 </body>

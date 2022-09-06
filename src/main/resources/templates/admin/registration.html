@@ -19,16 +19,16 @@
     </div>
     <div>
         <label for="firstname">Имя:
-            <input id="firstname" type="text" name="firstName" th:value="*{firstName}" required>
+            <input id="firstname" type="text" name="firstName" required>
         </label>
     </div>
     <div>
         <label for="lastname">Фамилия:
-            <input id="lastname" type="text" name="lastName" th:value="*{lastName}" required>
+            <input id="lastname" type="text" name="lastName" required>
         </label>
     </div>
-    <div th:each="role : ${roles}">
-        <input th:id="${role.name}" type="checkbox" name="role" th:value="${role.id}">
+    <div th:each="role : ${nroles}">
+        <input th:id="${role.name}" type="checkbox" name="selectedRoles" th:value="${role.id}">
         <label th:for="${role.name}" th:text="${role.name}">Role name</label>
     </div>
     <div>

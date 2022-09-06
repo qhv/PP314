@@ -16,10 +16,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -39,14 +41,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user, String rawPassword) {
+    public User create(User user, String rawPassword, String selectedRoles) {
         user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setRoles(roleService.findAllByIds(selectedRoles));
         return userRepository.save(user);
     }
 
     @Override
-    public User update(User user) {
+    public User update(User user, String selectedRoles) {
         user.setPassword(userRepository.findById(user.getId()).get().getPassword());
+        user.setRoles(roleService.findAllByIds(selectedRoles));
         return userRepository.save(user);
     }
 

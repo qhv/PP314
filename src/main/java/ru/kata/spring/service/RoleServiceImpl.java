@@ -5,7 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.model.Role;
 import ru.kata.spring.repository.RoleRepository;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -20,5 +23,14 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> findAll() {
         return roleRepository.findAll();
+    }
+
+    @Override public List<Role> findAllByIds(String selectedRoles) {
+        return Arrays.stream(selectedRoles.split(","))
+                .map(Integer::parseInt)
+                .map(roleRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
 }

@@ -8,12 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
-import ru.kata.spring.model.Role;
 import ru.kata.spring.model.User;
 import ru.kata.spring.service.RoleService;
 import ru.kata.spring.service.UserService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -36,13 +33,14 @@ public class AdminController {
     @GetMapping("/registration")
     public String registration(Model model, User user) {
         model.addAttribute("user", user);
-        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("nroles", roleService.findAll());
         return "admin/registration";
     }
 
     @PostMapping("/registration")
-    public String create(User user, String rawPassword, String role) {
-        userService.create(user, rawPassword);
+    public String create(User user, String rawPassword, String selectedRoles) {
+        if (selectedRoles == null) return "redirect:/admin/registration";
+        userService.create(user, rawPassword, selectedRoles);
         return "redirect:/admin";
     }
 
@@ -58,8 +56,10 @@ public class AdminController {
     }
 
     @PostMapping("/{id}/update")
-    public String update(User user, List<Integer> role) {
-        userService.update(user);
+    public String update(User user, String selectedRoles) {
+        if (selectedRoles != null) {
+            userService.update(user, selectedRoles);
+        }
         return "redirect:/admin/{id}";
     }
 

@@ -22,22 +22,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .anonymous()
                 .disable()
-                .authorizeHttpRequests(
-                        urlConfig -> urlConfig
-                                .antMatchers("/", "/login")
-                                .permitAll()
-                                .antMatchers("/user/**")
-                                .hasAnyAuthority("USER", "ADMIN")
-                                .antMatchers("/admin/**")
-                                .hasAuthority("ADMIN")
-                                .anyRequest()
-                                .denyAll()
-                )
-                .formLogin(
-                        login -> login
-                                .loginPage("/login")
-                                .successHandler(successUserHandler)
-                );
+                .authorizeHttpRequests(urlConfig -> urlConfig
+                        .antMatchers("/js/**", "/styles/css/**")
+                        .permitAll()
+                        .antMatchers("/", "/index", "/login")
+                        .permitAll()
+                        .antMatchers("/user/**")
+                        .hasAnyAuthority("USER", "ADMIN")
+                        .antMatchers("/admin/**")
+                        .hasAuthority("ADMIN")
+                        .anyRequest()
+                        .denyAll())
+                .formLogin(login -> login
+                        .loginPage("/login")
+                        .successHandler(successUserHandler));
     }
 
     @Bean

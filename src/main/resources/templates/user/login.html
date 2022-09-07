@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Login</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/styles/css/bootstrap.min.css" rel="stylesheet">
+    <title>Login</title>
 </head>
 <body>
 <form th:action="@{/login}" method="post">
@@ -20,5 +22,6 @@
         <button type="submit">Войти</button>
     </div>
 </form>
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

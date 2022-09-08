@@ -8,10 +8,19 @@
     <title>Fragments</title>
 </head>
 <body>
-<div th:if="${#authentication}" th:fragment="header">
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Выйти</button>
-    </form>
+<div th:if="${#authentication}" th:fragment="header" class="navbar bg-dark text-white">
+    <div class="container-fluid">
+        <div class="d-flex">
+            <span th:text="${#authentication.name}" class="fw-bold">User name</span>
+            &nbsp;with roles:&nbsp;
+            <th:block th:each="role : ${#authentication.authorities}">
+                <span th:text="${role.authority}">Role</span>
+            </th:block>
+        </div>
+        <form th:action="@{/logout}" method="post" class="d-flex">
+            <button type="submit" class="btn btn-link text-secondary link-">Logout</button>
+        </form>
+    </div>
 </div>
 <script src="/js/bootstrap.bundle.min.js"></script>
 </body>

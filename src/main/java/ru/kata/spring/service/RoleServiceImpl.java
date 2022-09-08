@@ -33,4 +33,12 @@ public class RoleServiceImpl implements RoleService {
                 .map(Optional::get)
                 .collect(Collectors.toList());
     }
+
+    @Override public List<Role> findAllByIds(Integer[] roleIds) {
+        return Arrays.stream(roleIds)
+                .map(roleRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
 }

@@ -94,6 +94,7 @@ public class User {
     }
 
     public void setRoles(List<Role> roles) {
+        roles.forEach(role -> role.getUsers().add(this));
         this.roles = roles;
     }
 

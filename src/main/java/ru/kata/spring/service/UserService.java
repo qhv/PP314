@@ -16,7 +16,11 @@ public interface UserService extends UserDetailsService {
 
     User create(User user, String rawPassword, String selectedRoles);
 
+    User create(User user, String rawPassword, Integer[] selectedRoleIds);
+
     User update(User user, String selectedRoles);
+
+    User update(User user, Integer[] roleIds);
 
     boolean delete(Long id);
 }

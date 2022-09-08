@@ -9,4 +9,6 @@ public interface RoleService {
     List<Role> findAll();
 
     List<Role> findAllByIds(String selectedRoles);
+
+    List<Role> findAllByIds(Integer[] roleIds);
 }

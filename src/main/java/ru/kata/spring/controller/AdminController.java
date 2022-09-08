@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
+import ru.kata.spring.model.Role;
 import ru.kata.spring.model.User;
 import ru.kata.spring.service.RoleService;
 import ru.kata.spring.service.UserService;
@@ -38,9 +39,9 @@ public class AdminController {
     }
 
     @PostMapping("/registration")
-    public String create(User user, String rawPassword, String selectedRoles) {
-        if (selectedRoles == null) return "redirect:/admin/registration";
-        userService.create(user, rawPassword, selectedRoles);
+    public String create(User user, String rawPassword, Integer[] selectedRoleIds) {
+        if (selectedRoleIds == null) return "redirect:/admin/registration";
+        userService.create(user, rawPassword, selectedRoleIds);
         return "redirect:/admin";
     }
 
@@ -56,9 +57,9 @@ public class AdminController {
     }
 
     @PostMapping("/{id}/update")
-    public String update(User user, String selectedRoles) {
-        if (selectedRoles != null) {
-            userService.update(user, selectedRoles);
+    public String update(User user, Integer[] selectedRoleIds) {
+        if (selectedRoleIds != null) {
+            userService.update(user, selectedRoleIds);
         }
         return "redirect:/admin/{id}";
     }

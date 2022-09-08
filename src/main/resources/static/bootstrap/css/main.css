@@ -1,0 +1,10 @@
+.no-under {
+    text-decoration: none;
+}
+
+a:not([class*="btn"]) {
+    text-decoration: none;
+}
+a:not([class*="btn"]):hover {
+    text-decoration: underline;
+}

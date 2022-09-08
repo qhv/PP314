@@ -5,22 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/styles/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/css/main.css" rel="stylesheet">
     <title>Fragments</title>
 </head>
 <body>
-<div th:if="${#authentication}" th:fragment="header" class="navbar bg-dark text-white">
-    <div class="container-fluid">
-        <div class="d-flex">
+<div th:if="${#authentication}" th:fragment="header" class="sticky-top bg-dark text-white">
+    <div class="container-fluid d-flex py-1">
+        <div class="align-self-center">
             <span th:text="${#authentication.name}" class="fw-bold">User name</span>
             &nbsp;with roles:&nbsp;
             <th:block th:each="role : ${#authentication.authorities}">
                 <span th:text="${role.authority}">Role</span>
             </th:block>
         </div>
-        <form th:action="@{/logout}" method="post" class="d-flex">
-            <button type="submit" class="btn btn-link text-secondary link-">Logout</button>
+        <form th:action="@{/logout}" method="post" class="d-inline position-absolute top-50 end-0 translate-middle-y">
+            <button type="submit" class="btn btn-link text-decoration-none link-secondary">Logout</button>
         </form>
     </div>
+</div>
+<div th:fragment="nav" class="nav" aria-orientation="vertical" role="tablist">
+    <th:block th:each="role : ${#authentication.authorities}">
+        <a th:if="${role.authority == 'ADMIN'}" href="/admin" class="nav-link active">Admin</a>
+    </th:block>
+    <a class="nav-link" href="/user">User</a>
 </div>
 <script src="/js/bootstrap.bundle.min.js"></script>
 </body>

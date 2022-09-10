@@ -4,22 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/styles/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/css/main.css" rel="stylesheet">
     <title>Пользователь</title>
 </head>
 <body>
 <div th:insert="~{fragment::header}"></div>
-<div class="container m-0 pt-1">
-    <div class="row">
-        <div th:insert="~{fragment::nav}" class="col-2"></div>
-        <div class="col-auto">
-            <div th:object="${user}">
-                <span th:text="*{id}">Id</span>
-                <span th:text="*{login}">Login</span>
-                <span th:text="*{firstName}">First name</span>
-                <span th:text="*{lastName}">Last name</span>
-                <th:block th:each="role : *{roles}">
-                    <span th:text="${role.name}">Role name</span>
-                </th:block>
+<div class="container-fluid qhv-bg">
+    <div class="row mt-2">
+        <nav class="nav nav-pills flex-column bg-white col-2 vh-100 pe-0">
+            <a class="nav-link text-start" href="/admin">Admin</a>
+            <a class="nav-link text-start active" href="/user">User</a>
+        </nav>
+        <div class="col-10">
+            <div class="container m-0 pt-1">
+                <div class="row">
+                    <div class="col-auto">
+                        <div th:object="${user}">
+                            <span th:text="*{id}">Id</span>
+                            <span th:text="*{login}">Login</span>
+                            <span th:text="*{firstName}">First name</span>
+                            <span th:text="*{lastName}">Last name</span>
+                            <th:block th:each="role : *{roles}">
+                                <span th:text="${role.name}">Role name</span>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

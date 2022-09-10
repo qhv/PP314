@@ -10,6 +10,7 @@ import ru.kata.spring.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -27,10 +28,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+        return userRepository.findUserById(id);
     }
 
-    @Override public User findByLogin(String login) {
+    @Override
+    public User findByLogin(String login) {
         return userRepository.findByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("Fail to retrieve user: " + login));
     }
@@ -41,28 +43,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user, String rawPassword, String selectedRoles) {
+    public User create(User user, String rawPassword, Integer[] selectedRoleIds) {
         user.setPassword(passwordEncoder.encode(rawPassword));
-        user.setRoles(roleService.findAllByIds(selectedRoles));
-        return userRepository.save(user);
-    }
-
-    @Override public User create(User user, String rawPassword, Integer[] selectedRoleIds) {
-        user.setPassword(passwordEncoder.encode(rawPassword));
-        user.setRoles(roleService.findAllByIds(selectedRoleIds));
+        // roleService.findAllById ищет роли в базе, которые установил админ на страние регистрации
+        user.getRoles().addAll(roleService.findAllById(List.of(selectedRoleIds)));
         return userRepository.save(user);
     }
 
     @Override
-    public User update(User user, String selectedRoles) {
-        user.setPassword(userRepository.findById(user.getId()).get().getPassword());
-        user.setRoles(roleService.findAllByIds(selectedRoles));
-        return userRepository.save(user);
-    }
-
-    @Override public User update(User user, Integer[] roleIds) {
-        user.setPassword(userRepository.findById(user.getId()).get().getPassword());
-        user.setRoles(roleService.findAllByIds(roleIds));
+    public User update(User user, Integer[] selectedRoleIds) {
+        user.setPassword(userRepository.findByIdIfUserExists(user.getId()).getPassword());
+        // Две строки ниже заменяют роли юзера на роли, установленные админом
+        user.getRoles().clear();
+        user.getRoles().addAll(roleService.findAllById(List.of(selectedRoleIds)));
         return userRepository.save(user);
     }
 
@@ -79,11 +72,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByLogin(username)
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getLogin(),
-                        user.getPassword(),
-                        user.getRoles()
-                ))
                 .orElseThrow(() -> new UsernameNotFoundException("Fail to retrieve user: " + username));
     }
 }

@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.configs;
+package ru.kata.spring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,20 +22,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .anonymous()
                 .disable()
-                .authorizeHttpRequests(urlConfig -> urlConfig
-                        .antMatchers("/js/**", "/styles/css/**")
-                        .permitAll()
-                        .antMatchers("/", "/index", "/login")
-                        .permitAll()
-                        .antMatchers("/user/**")
-                        .hasAnyAuthority("USER", "ADMIN")
-                        .antMatchers("/admin/**")
-                        .hasAuthority("ADMIN")
-                        .anyRequest()
-                        .denyAll())
-                .formLogin(login -> login
-                        .loginPage("/login")
-                        .successHandler(successUserHandler));
+                .authorizeHttpRequests(
+                        urlConfig -> urlConfig
+                                .antMatchers("/js/**", "/styles/css/**")
+                                .permitAll()
+                                .antMatchers("/", "/index", "/login")
+                                .permitAll()
+                                .antMatchers("/user/**")
+                                .hasAnyAuthority("USER", "ADMIN")
+                                .antMatchers("/admin/**")
+                                .hasAuthority("ADMIN")
+                                .anyRequest()
+                                .denyAll()
+                )
+                .formLogin(
+                        login -> login
+                                .loginPage("/login")
+                                .successHandler(successUserHandler)
+                );
     }
 
     @Bean

@@ -23,11 +23,11 @@
         </form>
     </div>
 </div>
-<div th:fragment="nav" class="nav" aria-orientation="vertical" role="tablist">
+<div th:fragment="nav" class="nav d-flex">
     <th:block th:each="role : ${#authentication.authorities}">
-        <a th:if="${role.authority == 'ADMIN'}" href="/admin" class="nav-link active">Admin</a>
+        <a th:if="${role.authority == 'ADMIN'}" href="/admin" class="nav-pills d-block active">Admin</a>
     </th:block>
-    <a class="nav-link" href="/user">User</a>
+    <a class="nav-pills d-block" href="/user">User</a>
 </div>
 <script src="/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -9,9 +9,12 @@
 </head>
 <body>
 <div th:insert="~{fragment::header}"></div>
-<div class="container m-0 pt-1">
-    <div class="row">
-        <div th:insert="~{fragment::nav}" class="col-2"></div>
+<div class="container-fluid qhv-bg">
+    <div class="row mt-2">
+        <nav class="nav nav-pills flex-column bg-white col-2 vh-100 pe-0">
+            <a class="nav-link text-start active" href="/admin">Admin</a>
+            <a class="nav-link text-start" href="/user">User</a>
+        </nav>
         <div class="col-10">
             <form action="/admin/registration">
                 <div>

@@ -12,6 +12,8 @@ import ru.kata.spring.model.User;
 import ru.kata.spring.service.RoleService;
 import ru.kata.spring.service.UserService;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -25,35 +27,17 @@ public class AdminController {
     }
 
     @GetMapping
-    public String findAll(Model model) {
+    public String findAll(Model model, Principal principal) {
+        model.addAttribute("admin", userService.findByLogin(principal.getName()));
         model.addAttribute("users", userService.findAll());
         model.addAttribute("roles", roleService.findAll());
         return "admin/users";
     }
 
-    @GetMapping("/registration")
-    public String registration(Model model, User user) {
-        model.addAttribute("user", user);
-        model.addAttribute("nroles", roleService.findAll());
-        return "admin/registration";
-    }
-
     @PostMapping("/registration")
     public String create(User user, String rawPassword, Integer[] selectedRoleIds) {
-        if (selectedRoleIds == null) return "redirect:/admin/registration";
-        userService.create(user, rawPassword, selectedRoleIds);
+        if (selectedRoleIds != null) userService.create(user, rawPassword, selectedRoleIds);
         return "redirect:/admin";
-    }
-
-    @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
-        return userService.findById(id)
-                .map(user -> {
-                    model.addAttribute("user", user);
-                    model.addAttribute("roles", roleService.findAll());
-                    return "admin/user";
-                })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/{id}/update")

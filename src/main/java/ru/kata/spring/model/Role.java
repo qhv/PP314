@@ -11,6 +11,8 @@ import java.util.Set;
 @Table
 public class Role implements GrantedAuthority {
 
+    public static Role ADMIN = new Role(null, "ADMIN", null);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

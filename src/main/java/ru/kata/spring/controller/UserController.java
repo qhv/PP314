@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.kata.spring.model.Role;
 import ru.kata.spring.service.UserService;
 
 import java.security.Principal;
@@ -20,7 +21,10 @@ public class UserController {
 
     @GetMapping
     public String findUser(Model model, Principal principal) {
-        model.addAttribute("user", userService.findByLogin(principal.getName()));
+        var user = userService.findByLogin(principal.getName());
+        if (user.getAuthorities().contains(Role.ADMIN)) return "redirect:/admin?user";
+        
+        model.addAttribute("user", user);
 
         return "user/user";
     }

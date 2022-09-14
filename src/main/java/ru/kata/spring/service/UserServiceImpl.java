@@ -51,8 +51,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User user, Integer[] selectedRoleIds) {
-        user.setPassword(userRepository.findByIdIfUserExists(user.getId()).getPassword());
+    public User update(User user, String rawPassword, Integer[] selectedRoleIds) {
+        if (rawPassword != null) {
+            user.setPassword(passwordEncoder.encode(rawPassword));
+        } else {
+            user.setPassword(userRepository.findByIdIfUserExists(user.getId()).getPassword());
+        }
         // Две строки ниже заменяют роли юзера на роли, установленные админом
         user.getRoles().clear();
         user.getRoles().addAll(roleService.findAllById(List.of(selectedRoleIds)));

@@ -26,6 +26,18 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String lastName;
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    @Column
+    private Integer age
+            ;
+
     @ManyToMany
     @JoinTable(
             name = "users_role",
@@ -142,14 +154,14 @@ public class User implements UserDetails {
         return Objects.hash(login);
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+               "id=" + id +
+               ", login='" + login + '\'' +
+               ", password='" + password + '\'' +
+               ", firstName='" + firstName + '\'' +
+               ", lastName='" + lastName + '\'' +
+               ", age=" + age +
+               '}';
     }
 }

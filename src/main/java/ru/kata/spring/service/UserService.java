@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService {
 
     User create(User user, String rawPassword, Integer[] selectedRoleIds);
 
-    User update(User user, Integer[] selectedRoleIds);
+    User update(User user, String rawPassword, Integer[] selectedRoleIds);
 
     boolean delete(Long id);
 }

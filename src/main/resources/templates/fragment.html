@@ -9,7 +9,7 @@
     <title>Fragments</title>
 </head>
 <body>
-<div th:if="${#authentication}" th:fragment="header" class="sticky-top bg-dark text-white">
+<div th:if="${#authentication}" th:fragment="header" class="sticky-top kata-bg-343a40 text-white">
     <div class="container-fluid d-flex py-1">
         <div class="align-self-center">
             <span th:text="${#authentication.name}" class="fw-bold">User name</span>
@@ -22,12 +22,6 @@
             <button type="submit" class="btn btn-link text-decoration-none link-secondary">Logout</button>
         </form>
     </div>
-</div>
-<div th:fragment="nav" class="nav d-flex">
-    <th:block th:each="role : ${#authentication.authorities}">
-        <a th:if="${role.authority == 'ADMIN'}" href="/admin" class="nav-pills d-block active">Admin</a>
-    </th:block>
-    <a class="nav-pills d-block" href="/user">User</a>
 </div>
 <script src="/js/bootstrap.bundle.min.js"></script>
 </body>

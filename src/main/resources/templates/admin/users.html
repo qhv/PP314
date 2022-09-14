@@ -9,31 +9,194 @@
 </head>
 <body>
 <div th:insert="~{fragment::header}"></div>
-<div class="container-fluid qhv-bg">
+<div class="container-fluid kata-bg-f8f9fa">
     <div class="row mt-2">
-        <nav class="nav nav-pills flex-column bg-white col-2 vh-100 pe-0">
-            <a class="nav-link text-start active" href="/admin">Admin</a>
+        <nav class="nav nav-pills flex-column bg-white col-2 min-vh-100 pe-0">
+            <a class="nav-link text-start active" href="#">Admin</a>
             <a class="nav-link text-start" href="/user">User</a>
         </nav>
-        <div class="col-10">
-            <form action="/admin/registration">
-                <div>
-                    <button type="submit">Зарегистрировать нового пользователя</button>
-                </div>
-            </form>
-            <div th:each="user : ${users}">
-                <div th:object="${user}">
-                    <span th:text="*{id}">Id</span>
-                    <span th:text="*{login}">Login</span>
-                    <span th:text="*{firstName}">First name</span>
-                    <span th:text="*{lastName}">Last name</span>
-                    <th:block th:each="role : *{roles}">
-                        <span th:text="${role.name}">Role name</span>
-                    </th:block>
-                    <a th:href="@{'/admin/' + *{id}}">Редактировать</a>
+        <div class="col-10 px-4">
+            <h2 class="h2">Admin panel</h2>
+            <ul id="userTab" class="nav nav-tabs">
+                <li class="nav-item">
+                    <a href="#userTable" class="nav-link active" data-bs-toggle="tab">User table</a>
+                </li>
 
-                    <form th:action="@{/admin/{id}/delete(id=*{id})}" method="post">
-                        <button type="submit">Удалить</button>
+                <li class="nav-item">
+                    <a href="#newUser" class="nav-link" data-bs-toggle="tab">New user</a>
+                </li>
+            </ul>
+            <div id="userTabContent" class="tab-content">
+                <div id="userTable" class="tab-pane fade rounded border kata-border-ced4da active show">
+                    <div class="rounded-top border-bottom kata-border-ced4da kata-bg-f7f7f7">
+                        <p class="fs-4 mb-0 ps-3 py-2">All users</p>
+                    </div>
+
+                    <div class="px-3 pt-3 pb-5">
+                        <table class="table table-striped table-borderless align-middle border-top">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">First name</th>
+                                <th scope="col">Last name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${users}" th:object="${user}">
+                                <td th:text="*{id}">Id</td>
+                                <td th:text="*{firstName}">First name</td>
+                                <td th:text="*{lastName}">Last name</td>
+                                <td th:text="*{age}">Age</td>
+                                <td th:text="*{login}">Email</td>
+                                <td>
+                                    <th:block th:each="role : *{roles}">
+                                        <span th:text="${role.name}">Role name</span>
+                                    </th:block>
+                                </td>
+                                <td>
+                                    <a class="btn text-white kata-bg-17a2b8" data-bs-toggle="modal"
+                                       th:data-bs-target="${'#editUser' + user.id}">Edit</a>
+                                    <!--                                       th:href="@{'/admin/' + *{id}}">Edit</a>-->
+                                </td>
+                                <td>
+                                    <form th:action="@{/admin/{id}/delete(id=*{id})}" method="post">
+                                        <button class="btn btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Modal -->
+                        <th:block th:each="user : ${users}" th:object="${user}">
+                            <div class="modal fade" th:id="${'editUser' + user.id}" tabindex="-1"
+                                 aria-labelledby="editModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editModalLabel">Edit user</h5>
+                                            <button type="button" class="btn-close btn-sm"
+                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form th:action="@{/admin/{id}/update(id=${user.id})}" method="post">
+                                            <div class="modal-body d-flex justify-content-center">
+                                                <div class="col-6 text-center">
+
+                                                    <label class="form-label fw-bold mb-0" for="editId">ID</label>
+                                                    <input class="form-control" id="editId" type="text"
+                                                           name="id" th:value="*{id}" disabled>
+                                                    <label class="form-label fw-bold mb-0 mt-3" for="editFirstname">First
+                                                        name</label>
+                                                    <input class="form-control" id="editFirstname" type="text"
+                                                           name="firstName" th:value="*{firstName}" required>
+                                                    <label class="form-label fw-bold mb-0 mt-3" for="editLastname">Last
+                                                        name</label>
+                                                    <input class="form-control" id="editLastname" type="text"
+                                                           name="lastName" th:value="*{lastName}" required>
+                                                    <label class="form-label fw-bold mb-0 mt-3"
+                                                           for="editAge">Age</label>
+                                                    <input class="form-control" id="editAge" type="number"
+                                                           name="age" th:value="*{age}">
+                                                    <label class="form-label fw-bold mb-0 mt-3"
+                                                           for="editLogin">Email</label>
+                                                    <input class="form-control" id="editLogin" type="email"
+                                                           name="login" th:value="*{login}">
+                                                    <label class="form-label fw-bold mb-0 mt-3" for="editPassword">
+                                                        Password
+                                                    </label>
+                                                    <input class="form-control" id="editPassword" type="password"
+                                                           name="rawPassword">
+
+                                                    <label class="form-label fw-bold mb-0 mt-3">Roles</label>
+                                                    <div th:each="role : ${roles}">
+                                                        <input class="form-check" th:id="${role.name}" type="checkbox"
+                                                               name="selectedRoleIds" th:value="${role.id}"
+                                                               th:checked="${user.roles.contains(role)}">
+                                                        <label class="form-label" th:for="${role.name}"
+                                                               th:text="${role.name}">
+                                                            Role name
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">Edit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                        <!-- Modal end -->
+
+                    </div>
+                </div>
+
+                <div id="newUser" class="tab-pane fade rounded border kata-border-ced4da">
+                    <div class="rounded-top border-bottom kata-border-ced4da kata-bg-f7f7f7">
+                        <p class="fs-4 mb-0 ps-3 py-2">Add new user</p>
+                    </div>
+                    <form th:action="@{/admin/registration}" method="post">
+                        <div class="container-fluid bg-white rounded-bottom">
+                            <div class="row justify-content-center pt-2">
+                                <label class="form-label text-center fw-bold mb-0" for="firstname">First name</label>
+                                <div class="col-4">
+                                    <input class="form-control" id="firstname" type="text" name="firstName" required>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mt-2">
+                                <label class="form-label text-center fw-bold mb-0" for="lastname">Last name</label>
+                                <div class="col-4">
+                                    <input class="form-control" id="lastname" type="text" name="lastName" required>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mt-2">
+                                <label class="form-label text-center fw-bold mb-0" for="age">Age</label>
+                                <div class="col-4">
+                                    <input class="form-control" id="age" type="number" name="age" required>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mt-2">
+                                <label class="form-label text-center fw-bold mb-0" for="login">Email</label>
+                                <div class="col-4">
+                                    <input class="form-control" id="login" type="email" name="login" required>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mt-2">
+                                <label class="form-label text-center fw-bold mb-0" for="rawPassword">Password</label>
+                                <div class="col-4">
+                                    <input class="form-control" id="rawPassword" type="password" name="rawPassword"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mt-2">
+                                <label class="form-label text-center fw-bold mb-0">Role</label>
+                                <div class="col-4 border">
+                                    <th:block th:each="role : ${roles}">
+                                        <div class="row justify-content-center">
+                                            <input th:id="${role.name}" type="checkbox" name="selectedRoleIds"
+                                                   th:value="${role.id}" hidden>
+                                            <label class="btn btn-primary" th:for="${role.name}" th:text="${role.name}">Role
+                                                name</label>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mt-2 pb-3">
+                                <div class="col-auto">
+                                    <button class="btn btn-success" type="submit">Add new user</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

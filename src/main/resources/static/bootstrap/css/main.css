@@ -1,10 +1,19 @@
-.qhv-bg {
+.kata-bg-f8f9fa {
     background-color: #f8f9fa;
 }
 
-a:not([class*="btn"]) {
-    text-decoration: none;
+.kata-bg-343a40 {
+    background-color: #343a40;
 }
-a:not([class*="btn"]):hover {
-    text-decoration: underline;
+
+.kata-bg-f7f7f7 {
+    background-color: #f7f7f7;
+}
+
+.kata-bg-17a2b8 {
+    background-color: #17a2b8;
+}
+
+.kata-border-ced4da {
+    border-color: #ced4da;
 }

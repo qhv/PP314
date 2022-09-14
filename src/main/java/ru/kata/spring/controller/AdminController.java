@@ -27,6 +27,7 @@ public class AdminController {
     @GetMapping
     public String findAll(Model model) {
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("roles", roleService.findAll());
         return "admin/users";
     }
 
@@ -56,11 +57,11 @@ public class AdminController {
     }
 
     @PostMapping("/{id}/update")
-    public String update(User user, Integer[] selectedRoleIds) {
+    public String update(User user, String rawPassword, Integer[] selectedRoleIds) {
         if (selectedRoleIds != null) {
-            userService.update(user, selectedRoleIds);
+            userService.update(user, rawPassword, selectedRoleIds);
         }
-        return "redirect:/admin/{id}";
+        return "redirect:/admin";
     }
 
     @PostMapping("/{id}/delete")

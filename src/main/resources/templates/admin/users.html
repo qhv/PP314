@@ -95,29 +95,32 @@
                             <div class="col-6 text-center">
 
                               <label class="form-label fw-bold mb-0" for="editId">ID</label>
-                              <input class="form-control" id="editId" type="text" name="id" th:value="*{id}" disabled>
+                              <input class="form-control text-secondary" id="editId" type="text"
+                                     name="id" th:value="*{id}" disabled>
                               <label class="form-label fw-bold mb-0 mt-3" for="editFirstname">First name</label>
-                              <input class="form-control" id="editFirstname" type="text"
-                                     name="firstName" th:value="*{firstName}" required>
+                              <input class="form-control text-secondary" id="editFirstname" type="text" name="firstName"
+                                     placeholder="First name" th:value="*{firstName}" required>
                               <label class="form-label fw-bold mb-0 mt-3" for="editLastname">Last name</label>
-                              <input class="form-control" id="editLastname" type="text" name="lastName"
-                                     th:value="*{lastName}" required>
+                              <input class="form-control text-secondary" id="editLastname" type="text" name="lastName"
+                                     placeholder="Last name" th:value="*{lastName}" required>
                               <label class="form-label fw-bold mb-0 mt-3" for="editAge">Age</label>
-                              <input class="form-control" id="editAge" type="number" name="age" th:value="*{age}">
+                              <input class="form-control text-secondary" id="editAge" type="number"
+                                     placeholder="Age" name="age" th:value="*{age}">
                               <label class="form-label fw-bold mb-0 mt-3" for="editLogin">Email</label>
-                              <input class="form-control" id="editLogin" type="email" name="login"
-                                     th:value="*{login}" required>
+                              <input class="form-control text-secondary" id="editLogin" type="email" name="login"
+                                     placeholder="Email" th:value="*{login}" required>
                               <label class="form-label fw-bold mb-0 mt-3" for="editPassword">Password</label>
                               <input class="form-control" id="editPassword" type="password" name="rawPassword">
 
                               <label class="form-label fw-bold mb-0 mt-3">Roles</label>
-                              <div class="form-control">
+                              <div class="form-control kata-form-shadow" tabindex="0">
                                 <div th:each="role : ${roles}">
                                   <input th:id="${'update' + role.name + user.id}" name="selectedRoleIds"
                                          th:value="${role.id}" class="btn-check" type="checkbox"
                                          th:checked="${user.roles.contains(role)}">
                                   <label th:for="${'update' + role.name + user.id}" th:text="${role.name}"
-                                         class="btn btn-outline-secondary border-0 w-100 text-start">Role name</label>
+                                         class="btn btn-outline-secondary kata-btn-primary border-0 rounded-0
+                                         px-1 py-0 w-100 text-start">Role name</label>
                                 </div>
                               </div>
 
@@ -149,28 +152,30 @@
                           <div class="modal-body d-flex justify-content-center">
                             <div class="col-6 text-center">
                               <label class="form-label fw-bold mb-0" for="deleteId">ID</label>
-                              <input class="form-control" id="deleteId" type="text" name="id" th:value="*{id}" disabled>
+                              <input class="form-control text-secondary" id="deleteId" type="text"
+                                     name="id" th:value="*{id}" disabled>
                               <label class="form-label fw-bold mb-0 mt-3" for="deleteFirstname">First name</label>
-                              <input class="form-control" id="deleteFirstname" type="text"
+                              <input class="form-control text-secondary" id="deleteFirstname" type="text"
                                      name="firstName" th:value="*{firstName}" disabled>
                               <label class="form-label fw-bold mb-0 mt-3" for="deleteLastname">Last name</label>
-                              <input class="form-control" id="deleteLastname" type="text" name="lastName"
-                                     th:value="*{lastName}" disabled>
+                              <input class="form-control text-secondary" id="deleteLastname" type="text"
+                                     name="lastName" th:value="*{lastName}" disabled>
                               <label class="form-label fw-bold mb-0 mt-3" for="deleteAge">Age</label>
-                              <input class="form-control" id="deleteAge" type="number"
+                              <input class="form-control text-secondary" id="deleteAge" type="number"
                                      name="age" th:value="*{age}" disabled>
                               <label class="form-label fw-bold mb-0 mt-3" for="deleteLogin">Email</label>
-                              <input class="form-control" id="deleteLogin" type="email"
+                              <input class="form-control text-secondary" id="deleteLogin" type="email"
                                      name="login" th:value="*{login}" disabled>
 
                               <label class="form-label fw-bold mb-0 mt-3">Roles</label>
-                              <div class="form-control">
+                              <div class="form-control kata-form-disabled">
                                 <div th:each="role : ${roles}">
                                   <input th:id="${'delete' + role.name}" name="selectedRoleIds" th:value="${role.id}"
                                          class="btn-check" type="checkbox" th:checked="${user.roles.contains(role)}"
                                          disabled>
                                   <label th:for="${'delete' + role.name}" th:text="${role.name}"
-                                         class="btn btn-outline-secondary border-0 w-100 text-start">Role name</label>
+                                         class="btn btn-outline-secondary border-0 rounded-0
+                                         px-1 py-0 w-100 text-start">Role name</label>
                                 </div>
                               </div>
                             </div>
@@ -197,22 +202,28 @@
                 <div class="d-flex justify-content-center bg-white rounded-bottom">
                   <div class="col-4 text-center">
                     <label class="form-label fw-bold mb-0 mt-3" for="firstname">First name</label>
-                    <input class="form-control" id="firstname" type="text" name="firstName" required>
+                    <input class="form-control text-secondary" id="firstname" type="text" name="firstName"
+                           placeholder="First name" required>
                     <label class="form-label fw-bold mb-0 mt-3" for="lastname">Last name</label>
-                    <input class="form-control" id="lastname" type="text" name="lastName" required>
+                    <input class="form-control text-secondary" id="lastname" type="text" name="lastName"
+                           placeholder="Last name" required>
                     <label class="form-label fw-bold mb-0 mt-3" for="age">Age</label>
-                    <input class="form-control" id="age" type="number" name="age" required>
+                    <input class="form-control text-secondary" id="age" type="number" name="age"
+                           placeholder="Age" required>
                     <label class="form-label fw-bold mb-0 mt-3" for="login">Email</label>
-                    <input class="form-control" id="login" type="email" name="login" required>
+                    <input class="form-control text-secondary" id="login" type="email" name="login"
+                           placeholder="Email" required>
                     <label class="form-label fw-bold mb-0 mt-3" for="rawPassword">Password</label>
-                    <input class="form-control" id="rawPassword" type="password" name="rawPassword" required>
+                    <input class="form-control text-secondary" id="rawPassword" type="password"
+                           name="rawPassword" placeholder="Password" required>
                     <label class="form-label fw-bold mb-0 mt-3">Role</label>
-                    <div class="form-control">
+                    <div class="form-control kata-form-shadow" tabindex="0">
                       <div th:each="role : ${roles}">
                         <input th:id="${'create' + role.name}" name="selectedRoleIds" th:value="${role.id}"
                                class="btn-check" type="checkbox">
                         <label th:for="${'create' + role.name}" th:text="${role.name}"
-                               class="btn btn-outline-secondary border-0 w-100 text-start">Role name</label>
+                               class="btn btn-outline-secondary kata-btn-primary rounded-0 border-0
+                               px-1 py-0 w-100 text-start">Role name</label>
                       </div>
                     </div>
                     <button class="btn btn-success my-3" type="submit">Add new user</button>

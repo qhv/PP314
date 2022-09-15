@@ -24,6 +24,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeHttpRequests(
                         urlConfig -> urlConfig
+                                .antMatchers("/api/**")
+                                .permitAll()
                                 .antMatchers("/js/**", "/styles/css/**")
                                 .permitAll()
                                 .antMatchers("/", "/index", "/login")

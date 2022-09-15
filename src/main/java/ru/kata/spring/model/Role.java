@@ -1,5 +1,6 @@
 package ru.kata.spring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table
+@JsonIgnoreProperties("users")
 public class Role implements GrantedAuthority {
 
     public static Role ADMIN = new Role(null, "ADMIN", null);

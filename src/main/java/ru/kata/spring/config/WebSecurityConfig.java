@@ -22,17 +22,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .anonymous()
                 .disable()
+//                .csrf()
+//                .disable()
                 .authorizeHttpRequests(
                         urlConfig -> urlConfig
-                                .antMatchers("/api/**")
-                                .permitAll()
                                 .antMatchers("/js/**", "/styles/css/**")
                                 .permitAll()
                                 .antMatchers("/", "/index", "/login")
                                 .permitAll()
                                 .antMatchers("/user/**")
                                 .hasAnyAuthority("USER", "ADMIN")
-                                .antMatchers("/admin/**")
+                                .antMatchers("/admin/**", "/api/v1/admin/**")
                                 .hasAuthority("ADMIN")
                                 .anyRequest()
                                 .denyAll()

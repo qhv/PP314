@@ -43,10 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user, String rawPassword, Integer[] selectedRoleIds) {
-        user.setPassword(passwordEncoder.encode(rawPassword));
-        // roleService.findAllById ищет роли в базе, которые установил админ на страние регистрации
-        user.getRoles().addAll(roleService.findAllById(List.of(selectedRoleIds)));
+    public User create(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

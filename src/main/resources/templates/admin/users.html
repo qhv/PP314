@@ -26,7 +26,7 @@
           <h2 class="h2">Admin panel</h2>
           <ul id="userTab" class="nav nav-tabs">
             <li class="nav-item">
-              <a href="#userTable" class="nav-link active" data-bs-toggle="tab">User table</a>
+              <a id="userTableLink" href="#userTable" class="nav-link active" data-bs-toggle="tab">User table</a>
             </li>
 
             <li class="nav-item">
@@ -55,27 +55,8 @@
                     <th scope="col">Delete</th>
                   </tr>
                   </thead>
-                  <tbody>
-                  <tr th:each="user : ${users}" th:object="${user}">
-                    <td th:text="*{id}">Id</td>
-                    <td th:text="*{firstName}">First name</td>
-                    <td th:text="*{lastName}">Last name</td>
-                    <td th:text="*{age}">Age</td>
-                    <td th:text="*{login}">Email</td>
-                    <td>
-                      <th:block th:each="role : *{roles}">
-                        <span th:text="${role.name}">Role name</span>
-                      </th:block>
-                    </td>
-                    <td>
-                      <a class="btn text-white kata-bg-17a2b8" data-bs-toggle="modal"
-                         th:data-bs-target="${'#editUser' + user.id}">Edit</a>
-                    </td>
-                    <td>
-                      <a class="btn btn-danger" data-bs-toggle="modal"
-                         th:data-bs-target="${'#deleteUser' + user.id}">Delete</a>
-                    </td>
-                  </tr>
+                  <tbody id="users">
+                  <!--                  filled by javaScript -->
                   </tbody>
                 </table>
 
@@ -137,60 +118,6 @@
                 </th:block>
                 <!-- Modal update end -->
 
-                <!-- Modal delete -->
-                <th:block th:each="user : ${users}" th:object="${user}">
-                  <div class="modal fade" th:id="${'deleteUser' + user.id}" tabindex="-1"
-                       aria-labelledby="deleteModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="deleteModalLabel">Delete user</h5>
-                          <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
-                                  aria-label="Close"></button>
-                        </div>
-                        <form th:action="@{/admin/{id}/delete(id=${user.id})}" method="post">
-                          <div class="modal-body d-flex justify-content-center">
-                            <div class="col-6 text-center">
-                              <label class="form-label fw-bold mb-0" for="deleteId">ID</label>
-                              <input class="form-control text-secondary" id="deleteId" type="text"
-                                     name="id" th:value="*{id}" disabled>
-                              <label class="form-label fw-bold mb-0 mt-3" for="deleteFirstname">First name</label>
-                              <input class="form-control text-secondary" id="deleteFirstname" type="text"
-                                     name="firstName" th:value="*{firstName}" disabled>
-                              <label class="form-label fw-bold mb-0 mt-3" for="deleteLastname">Last name</label>
-                              <input class="form-control text-secondary" id="deleteLastname" type="text"
-                                     name="lastName" th:value="*{lastName}" disabled>
-                              <label class="form-label fw-bold mb-0 mt-3" for="deleteAge">Age</label>
-                              <input class="form-control text-secondary" id="deleteAge" type="number"
-                                     name="age" th:value="*{age}" disabled>
-                              <label class="form-label fw-bold mb-0 mt-3" for="deleteLogin">Email</label>
-                              <input class="form-control text-secondary" id="deleteLogin" type="email"
-                                     name="login" th:value="*{login}" disabled>
-
-                              <label class="form-label fw-bold mb-0 mt-3">Roles</label>
-                              <div class="form-control kata-form-disabled">
-                                <div th:each="role : ${roles}">
-                                  <input th:id="${'delete' + role.name}" name="selectedRoleIds" th:value="${role.id}"
-                                         class="btn-check" type="checkbox" th:checked="${user.roles.contains(role)}"
-                                         disabled>
-                                  <label th:for="${'delete' + role.name}" th:text="${role.name}"
-                                         class="btn btn-outline-secondary border-0 rounded-0
-                                         px-1 py-0 w-100 text-start">Role name</label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </th:block>
-                <!-- Modal delete end -->
-
               </div>
             </div>
 
@@ -198,38 +125,36 @@
               <div class="rounded-top border-bottom kata-border-ced4da kata-bg-f7f7f7">
                 <p class="fs-4 mb-0 ps-3 py-2">Add new user</p>
               </div>
-              <form th:action="@{/admin/registration}" method="post">
-                <div class="d-flex justify-content-center bg-white rounded-bottom">
-                  <div class="col-4 text-center">
-                    <label class="form-label fw-bold mb-0 mt-3" for="firstname">First name</label>
-                    <input class="form-control text-secondary" id="firstname" type="text" name="firstName"
-                           placeholder="First name" required>
-                    <label class="form-label fw-bold mb-0 mt-3" for="lastname">Last name</label>
-                    <input class="form-control text-secondary" id="lastname" type="text" name="lastName"
-                           placeholder="Last name" required>
-                    <label class="form-label fw-bold mb-0 mt-3" for="age">Age</label>
-                    <input class="form-control text-secondary" id="age" type="number" name="age"
-                           placeholder="Age" required>
-                    <label class="form-label fw-bold mb-0 mt-3" for="login">Email</label>
-                    <input class="form-control text-secondary" id="login" type="email" name="login"
-                           placeholder="Email" required>
-                    <label class="form-label fw-bold mb-0 mt-3" for="rawPassword">Password</label>
-                    <input class="form-control text-secondary" id="rawPassword" type="password"
-                           name="rawPassword" placeholder="Password" required>
-                    <label class="form-label fw-bold mb-0 mt-3">Role</label>
-                    <div class="form-control kata-form-shadow" tabindex="0">
-                      <div th:each="role : ${roles}">
-                        <input th:id="${'create' + role.name}" name="selectedRoleIds" th:value="${role.id}"
-                               class="btn-check" type="checkbox">
-                        <label th:for="${'create' + role.name}" th:text="${role.name}"
-                               class="btn btn-outline-secondary kata-btn-primary rounded-0 border-0
+              <div class="d-flex justify-content-center bg-white rounded-bottom">
+                <div class="col-4 text-center">
+                  <label class="form-label fw-bold mb-0 mt-3" for="firstname">First name</label>
+                  <input class="form-control text-secondary" id="firstname" type="text" name="firstName"
+                         placeholder="First name" required>
+                  <label class="form-label fw-bold mb-0 mt-3" for="lastname">Last name</label>
+                  <input class="form-control text-secondary" id="lastname" type="text" name="lastName"
+                         placeholder="Last name" required>
+                  <label class="form-label fw-bold mb-0 mt-3" for="age">Age</label>
+                  <input class="form-control text-secondary" id="age" type="number" name="age"
+                         placeholder="Age" required>
+                  <label class="form-label fw-bold mb-0 mt-3" for="login">Email</label>
+                  <input class="form-control text-secondary" id="login" type="email" name="login"
+                         placeholder="Email" required>
+                  <label class="form-label fw-bold mb-0 mt-3" for="rawPassword">Password</label>
+                  <input class="form-control text-secondary" id="rawPassword" type="password"
+                         name="rawPassword" placeholder="Password" required>
+                  <label class="form-label fw-bold mb-0 mt-3">Role</label>
+                  <div class="form-control kata-form-shadow" tabindex="0">
+                    <div th:each="role : ${roles}">
+                      <input th:id="${'create' + role.name}" name="selectedRoles" th:data-role-id="${role.id}"
+                             th:data-role-name="${role.name}" class="btn-check" type="checkbox">
+                      <label th:for="${'create' + role.name}" th:text="${role.name}"
+                             class="btn btn-outline-secondary kata-btn-primary rounded-0 border-0
                                px-1 py-0 w-100 text-start">Role name</label>
-                      </div>
                     </div>
-                    <button class="btn btn-success my-3" type="submit">Add new user</button>
                   </div>
+                  <button id="addNewUser" class="btn btn-success my-3">Add new user</button>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
           <!-- End of tab content -->
@@ -282,6 +207,52 @@
     </div>
   </div>
 </div>
+
+<!-- Modal delete -->
+<div class="modal fade" id="deleteUser" tabindex="-1"
+     aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete user</h5>
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <form id="deleteUserForm">
+        <div class="modal-body d-flex justify-content-center">
+          <div class="col-6 text-center">
+            <label class="form-label fw-bold mb-0" for="deleteId">ID</label>
+            <input class="form-control text-secondary" id="deleteId" type="text" name="id" disabled>
+            <label class="form-label fw-bold mb-0 mt-3" for="deleteFirstname">First name</label>
+            <input class="form-control text-secondary" id="deleteFirstname" type="text" name="firstName" disabled>
+            <label class="form-label fw-bold mb-0 mt-3" for="deleteLastname">Last name</label>
+            <input class="form-control text-secondary" id="deleteLastname" type="text" name="lastName" disabled>
+            <label class="form-label fw-bold mb-0 mt-3" for="deleteAge">Age</label>
+            <input class="form-control text-secondary" id="deleteAge" type="number" name="age" disabled>
+            <label class="form-label fw-bold mb-0 mt-3" for="deleteLogin">Email</label>
+            <input class="form-control text-secondary" id="deleteLogin" type="email" name="login" disabled>
+            <label class="form-label fw-bold mb-0 mt-3">Roles</label>
+            <div class="form-control kata-form-disabled">
+              <div th:each="role : ${roles}">
+                <input th:id="${'delete' + role.name}" name="deleteRoles" th:value="${role.name}"
+                       class="btn-check" type="checkbox" disabled>
+                <label th:for="${'delete' + role.name}" th:text="${role.name}"
+                       class="btn btn-outline-secondary border-0 rounded-0 px-1 py-0 w-100 text-start">Role name</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Modal delete end -->
+
 <script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/app.js"></script>
 </body>
 </html>

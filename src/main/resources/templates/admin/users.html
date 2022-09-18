@@ -86,14 +86,8 @@
                   <input class="form-control text-secondary" id="rawPassword" type="password"
                          name="rawPassword" placeholder="Password" required>
                   <label class="form-label fw-bold mb-0 mt-3">Role</label>
-                  <div class="form-control kata-form-shadow" tabindex="0">
-                    <div th:each="role : ${roles}">
-                      <input th:id="${'create' + role.name}" name="createRoles" th:data-role-id="${role.id}"
-                             th:data-role-name="${role.name}" class="btn-check" type="checkbox">
-                      <label th:for="${'create' + role.name}" th:text="${role.name}"
-                             class="btn btn-outline-secondary kata-btn-primary rounded-0 border-0
-                               px-1 py-0 w-100 text-start">Role name</label>
-                    </div>
+                  <div id="createCheckbox" class="form-control kata-form-shadow" tabindex="0">
+<!--                filled by js    -->
                   </div>
                   <button id="addNewUser" class="btn btn-success my-3">Add new user</button>
                 </div>
@@ -127,17 +121,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:object="${admin}">
-                  <td th:text="*{id}">Id</td>
-                  <td th:text="*{firstName}">First name</td>
-                  <td th:text="*{lastName}">Last name</td>
-                  <td th:text="*{age}">Age</td>
-                  <td th:text="*{login}">Email</td>
-                  <td>
-                    <th:block th:each="role : *{roles}">
-                      <span th:text="${role.name}">Role name</span>
-                    </th:block>
-                  </td>
+                <tr id="userPage">
+                  <td>Id</td>
+                  <td>First name</td>
+                  <td>Last name</td>
+                  <td>Age</td>
+                  <td>Email</td>
+                  <td>Roles<td>
                 </tr>
                 </tbody>
               </table>
@@ -181,14 +171,8 @@
             <label class="form-label fw-bold mb-0 mt-3" for="editPassword">Password</label>
             <input class="form-control" id="editPassword" type="password" name="editPassword">
             <label class="form-label fw-bold mb-0 mt-3">Roles</label>
-            <div class="form-control kata-form-shadow" tabindex="0">
-              <div th:each="role : ${roles}">
-                <input th:id="${'update' + role.name}" name="updateRoles" th:data-role-id="${role.id}"
-                       th:data-role-name="${role.name}" th:value="${role.name}" class="btn-check" type="checkbox">
-                <label th:for="${'update' + role.name}" th:text="${role.name}"
-                       class="btn btn-outline-secondary kata-btn-primary border-0 rounded-0
-                                         px-1 py-0 w-100 text-start">Role name</label>
-              </div>
+            <div id="updateCheckbox" class="form-control kata-form-shadow" tabindex="0">
+<!--            filled by js    -->
             </div>
 
           </div>
@@ -227,13 +211,8 @@
             <label class="form-label fw-bold mb-0 mt-3" for="deleteLogin">Email</label>
             <input class="form-control text-secondary" id="deleteLogin" type="email" name="deleteLogin" disabled>
             <label class="form-label fw-bold mb-0 mt-3">Roles</label>
-            <div class="form-control kata-form-disabled">
-              <div th:each="role : ${roles}">
-                <input th:id="${'delete' + role.name}" name="deleteRoles" th:value="${role.name}"
-                       class="btn-check" type="checkbox" disabled>
-                <label th:for="${'delete' + role.name}" th:text="${role.name}"
-                       class="btn btn-outline-secondary border-0 rounded-0 px-1 py-0 w-100 text-start">Role name</label>
-              </div>
+            <div id="deleteCheckbox" class="form-control kata-form-disabled">
+<!--            filled by js -->
             </div>
           </div>
         </div>

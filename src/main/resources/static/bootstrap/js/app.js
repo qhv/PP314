@@ -1,4 +1,6 @@
 window.addEventListener('DOMContentLoaded', getAllUsers);
+window.addEventListener('DOMContentLoaded', getAllRoles);
+window.addEventListener('DOMContentLoaded', getPrincipal);
 
 async function getAllUsers() {
     const result = await fetch('/api/v1/admin/users');
@@ -36,6 +38,52 @@ function updateUserInTable({id, firstName, lastName, age, login, roles}) {
     rowNodes[3].textContent = age;
     rowNodes[4].textContent = login;
     rowNodes[5].textContent = roles.map(role => role.name).reduce((acc, name) => acc + ' ' + name);
+}
+
+async function getAllRoles() {
+    const result = await fetch('/api/v1/admin/roles');
+    const roles = await result.json();
+
+    const createCheckbox = document.getElementById('createCheckbox');
+    const updateCheckbox = document.getElementById('updateCheckbox');
+    const deleteCheckbox = document.getElementById('deleteCheckbox');
+
+    roles.forEach(role => {
+        addActiveCheckbox(createCheckbox, 'create', role);
+        addActiveCheckbox(updateCheckbox, 'update', role);
+        addInactiveCheckbox(deleteCheckbox, 'delete', role.name);
+    });
+}
+
+function addActiveCheckbox(node, operation, role) {
+    node.insertAdjacentHTML('beforeend', `
+        <input id="${operation}${role.name}" name="${operation}Roles" data-role-id="${role.id}"
+            data-role-name="${role.name}" value="${role.name}" class="btn-check" type="checkbox">
+        <label class="btn btn-outline-secondary kata-btn-primary border-0 rounded-0 px-1 py-0 w-100 text-start"
+            for="${operation}${role.name}">${role.name}</label>
+   `);
+}
+
+function addInactiveCheckbox(node, operation, roleName) {
+    node.insertAdjacentHTML('beforeend', `
+        <input id="${operation}${roleName}" name="${operation}Roles" value="${roleName}"
+            class="btn-check" type="checkbox" disabled>
+        <label class="btn btn-outline-secondary border-0 rounded-0 px-1 py-0 w-100 text-start"
+            for="${operation}${roleName}">${roleName}</label>
+    `);
+}
+
+async function getPrincipal() {
+    const result = await fetch('/api/v1/principal');
+    const principal = await result.json();
+    const rowValues = document.getElementById('userPage').children;
+
+    rowValues[0].textContent = principal.id;
+    rowValues[1].textContent = principal.firstName;
+    rowValues[2].textContent = principal.lastName;
+    rowValues[3].textContent = principal.age;
+    rowValues[4].textContent = principal.login;
+    rowValues[5].textContent = principal.roles.map(role => role.name).reduce((acc, name) => acc + ' ' + name);
 }
 
 document.getElementById('users').addEventListener('click', event => {
@@ -129,7 +177,7 @@ document.getElementById('editUserForm').addEventListener('submit', async event =
             'X-CSRF-Token': csrfToken.value
         },
         body: JSON.stringify({
-            id : idEl.value,
+            id: idEl.value,
             firstName: firstNameEl.value,
             lastName: lastNameEl.value,
             age: ageEl.value,

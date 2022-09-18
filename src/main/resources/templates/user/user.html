@@ -36,17 +36,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:object="${user}">
-              <td th:text="*{id}">Id</td>
-              <td th:text="*{firstName}">First name</td>
-              <td th:text="*{lastName}">Last name</td>
-              <td th:text="*{age}">Age</td>
-              <td th:text="*{login}">Email</td>
-              <td>
-                <th:block th:each="role : *{roles}">
-                  <span th:text="${role.name}">Role name</span>
-                </th:block>
-              </td>
+            <tr id="userPage">
+              <td>Id</td>
+              <td>First name</td>
+              <td>Last name</td>
+              <td>Age</td>
+              <td>Email</td>
+              <td>Roles</td>
             </tr>
             </tbody>
           </table>
@@ -57,5 +53,6 @@
 </div>
 
 <script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/user.js"></script>
 </body>
 </html>

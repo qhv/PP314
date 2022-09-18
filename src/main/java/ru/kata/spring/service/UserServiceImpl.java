@@ -59,13 +59,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean delete(Long id) {
-        return userRepository.findById(id)
-                .map(entity -> {
-                    userRepository.deleteById(id);
-                    return true;
-                })
-                .orElse(false);
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
 
     @Override

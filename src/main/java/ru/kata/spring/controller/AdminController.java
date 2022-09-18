@@ -26,16 +26,7 @@ public class AdminController {
     @GetMapping
     public String findAll(Model model, Principal principal) {
         model.addAttribute("admin", userService.findByLogin(principal.getName()));
-        model.addAttribute("users", userService.findAll());
         model.addAttribute("roles", roleService.findAll());
         return "admin/users";
-    }
-
-    @PostMapping("/{id}/update")
-    public String update(User user, String rawPassword, Integer[] selectedRoleIds) {
-        if (selectedRoleIds != null) {
-            userService.update(user, rawPassword, selectedRoleIds);
-        }
-        return "redirect:/admin";
     }
 }

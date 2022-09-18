@@ -60,63 +60,6 @@
                   </tbody>
                 </table>
 
-                <!-- Modal update -->
-                <th:block th:each="user : ${users}" th:object="${user}">
-                  <div class="modal fade" th:id="${'editUser' + user.id}" tabindex="-1"
-                       aria-labelledby="editModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="editModalLabel">Edit user</h5>
-                          <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
-                                  aria-label="Close"></button>
-                        </div>
-                        <form th:action="@{/admin/{id}/update(id=${user.id})}" method="post">
-                          <div class="modal-body d-flex justify-content-center">
-                            <div class="col-6 text-center">
-
-                              <label class="form-label fw-bold mb-0" for="editId">ID</label>
-                              <input class="form-control text-secondary" id="editId" type="text"
-                                     name="id" th:value="*{id}" disabled>
-                              <label class="form-label fw-bold mb-0 mt-3" for="editFirstname">First name</label>
-                              <input class="form-control text-secondary" id="editFirstname" type="text" name="firstName"
-                                     placeholder="First name" th:value="*{firstName}" required>
-                              <label class="form-label fw-bold mb-0 mt-3" for="editLastname">Last name</label>
-                              <input class="form-control text-secondary" id="editLastname" type="text" name="lastName"
-                                     placeholder="Last name" th:value="*{lastName}" required>
-                              <label class="form-label fw-bold mb-0 mt-3" for="editAge">Age</label>
-                              <input class="form-control text-secondary" id="editAge" type="number"
-                                     placeholder="Age" name="age" th:value="*{age}">
-                              <label class="form-label fw-bold mb-0 mt-3" for="editLogin">Email</label>
-                              <input class="form-control text-secondary" id="editLogin" type="email" name="login"
-                                     placeholder="Email" th:value="*{login}" required>
-                              <label class="form-label fw-bold mb-0 mt-3" for="editPassword">Password</label>
-                              <input class="form-control" id="editPassword" type="password" name="rawPassword">
-
-                              <label class="form-label fw-bold mb-0 mt-3">Roles</label>
-                              <div class="form-control kata-form-shadow" tabindex="0">
-                                <div th:each="role : ${roles}">
-                                  <input th:id="${'update' + role.name + user.id}" name="selectedRoleIds"
-                                         th:value="${role.id}" class="btn-check" type="checkbox"
-                                         th:checked="${user.roles.contains(role)}">
-                                  <label th:for="${'update' + role.name + user.id}" th:text="${role.name}"
-                                         class="btn btn-outline-secondary kata-btn-primary border-0 rounded-0
-                                         px-1 py-0 w-100 text-start">Role name</label>
-                                </div>
-                              </div>
-
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Edit</button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </th:block>
-                <!-- Modal update end -->
 
               </div>
             </div>
@@ -145,7 +88,7 @@
                   <label class="form-label fw-bold mb-0 mt-3">Role</label>
                   <div class="form-control kata-form-shadow" tabindex="0">
                     <div th:each="role : ${roles}">
-                      <input th:id="${'create' + role.name}" name="selectedRoles" th:data-role-id="${role.id}"
+                      <input th:id="${'create' + role.name}" name="createRoles" th:data-role-id="${role.id}"
                              th:data-role-name="${role.name}" class="btn-check" type="checkbox">
                       <label th:for="${'create' + role.name}" th:text="${role.name}"
                              class="btn btn-outline-secondary kata-btn-primary rounded-0 border-0
@@ -208,6 +151,58 @@
   </div>
 </div>
 
+<!-- Modal update -->
+<div class="modal fade" id="editUser" tabindex="-1"
+     aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit user</h5>
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <form id="editUserForm">
+        <div class="modal-body d-flex justify-content-center">
+          <div class="col-6 text-center">
+
+            <label class="form-label fw-bold mb-0" for="editId">ID</label>
+            <input class="form-control text-secondary" id="editId" type="text" name="editId" disabled>
+            <label class="form-label fw-bold mb-0 mt-3" for="editFirstname">First name</label>
+            <input class="form-control text-secondary" id="editFirstname" type="text" name="editFirstname"
+                   placeholder="First name" required>
+            <label class="form-label fw-bold mb-0 mt-3" for="editLastname">Last name</label>
+            <input class="form-control text-secondary" id="editLastname" type="text" name="editLastname"
+                   placeholder="Last name" required>
+            <label class="form-label fw-bold mb-0 mt-3" for="editAge">Age</label>
+            <input class="form-control text-secondary" id="editAge" type="number" placeholder="Age" name="editAge">
+            <label class="form-label fw-bold mb-0 mt-3" for="editLogin">Email</label>
+            <input class="form-control text-secondary" id="editLogin" type="email" name="editLogin"
+                   placeholder="Email" required>
+            <label class="form-label fw-bold mb-0 mt-3" for="editPassword">Password</label>
+            <input class="form-control" id="editPassword" type="password" name="editPassword">
+            <label class="form-label fw-bold mb-0 mt-3">Roles</label>
+            <div class="form-control kata-form-shadow" tabindex="0">
+              <div th:each="role : ${roles}">
+                <input th:id="${'update' + role.name}" name="updateRoles" th:data-role-id="${role.id}"
+                       th:data-role-name="${role.name}" th:value="${role.name}" class="btn-check" type="checkbox">
+                <label th:for="${'update' + role.name}" th:text="${role.name}"
+                       class="btn btn-outline-secondary kata-btn-primary border-0 rounded-0
+                                         px-1 py-0 w-100 text-start">Role name</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Edit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Modal update end -->
+
 <!-- Modal delete -->
 <div class="modal fade" id="deleteUser" tabindex="-1"
      aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -222,15 +217,15 @@
         <div class="modal-body d-flex justify-content-center">
           <div class="col-6 text-center">
             <label class="form-label fw-bold mb-0" for="deleteId">ID</label>
-            <input class="form-control text-secondary" id="deleteId" type="text" name="id" disabled>
+            <input class="form-control text-secondary" id="deleteId" type="text" name="deleteId" disabled>
             <label class="form-label fw-bold mb-0 mt-3" for="deleteFirstname">First name</label>
-            <input class="form-control text-secondary" id="deleteFirstname" type="text" name="firstName" disabled>
+            <input class="form-control text-secondary" id="deleteFirstname" type="text" name="deleteFirstname" disabled>
             <label class="form-label fw-bold mb-0 mt-3" for="deleteLastname">Last name</label>
-            <input class="form-control text-secondary" id="deleteLastname" type="text" name="lastName" disabled>
+            <input class="form-control text-secondary" id="deleteLastname" type="text" name="deleteLastname" disabled>
             <label class="form-label fw-bold mb-0 mt-3" for="deleteAge">Age</label>
-            <input class="form-control text-secondary" id="deleteAge" type="number" name="age" disabled>
+            <input class="form-control text-secondary" id="deleteAge" type="number" name="deleteAge" disabled>
             <label class="form-label fw-bold mb-0 mt-3" for="deleteLogin">Email</label>
-            <input class="form-control text-secondary" id="deleteLogin" type="email" name="login" disabled>
+            <input class="form-control text-secondary" id="deleteLogin" type="email" name="deleteLogin" disabled>
             <label class="form-label fw-bold mb-0 mt-3">Roles</label>
             <div class="form-control kata-form-disabled">
               <div th:each="role : ${roles}">

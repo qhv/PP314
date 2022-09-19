@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', getPrincipal);
 async function getPrincipal() {
     const result = await fetch('/api/v1/principal');
     const principal = await result.json();
-    const roles = principal.roles.map(role => role.name).reduce((acc, name) => acc + ' ' + name);
+    const roles = principal.roles.map(role => role.name.replace('ROLE_', '')).reduce((acc, name) => acc + ' ' + name);
 
     if (roles.includes('ADMIN')) {
         window.location.replace('/admin?user');

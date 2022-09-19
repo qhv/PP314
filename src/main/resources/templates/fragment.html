@@ -15,7 +15,7 @@
             <span th:text="${#authentication.name}" class="fw-bold">User name</span>
             &nbsp;with roles:&nbsp;
             <th:block th:each="role : ${#authentication.authorities}">
-                <span th:text="${role.authority}">Role</span>
+                <span th:text="${role.authority.replace('ROLE_', '')}">Role</span>
             </th:block>
         </div>
         <form th:action="@{/logout}" method="post" class="d-inline position-absolute top-50 end-0 translate-middle-y">

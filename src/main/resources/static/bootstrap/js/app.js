@@ -19,7 +19,10 @@ function addUserToTable({id, firstName, lastName, age, login, roles}) {
           <td>${lastName}</td>
           <td>${age == null ? '' : age}</td>
           <td>${login}</td>
-          <td>${roles.map(role => role.name).reduce((name, nextName) => name + ' ' + nextName)}</td>
+          <td>
+            ${roles.map(role => role.name.replace('ROLE_', ''))
+              .reduce((name, nextName) => name + ' ' + nextName)}
+          </td>
           <td>
             <a class="btn text-white kata-bg-17a2b8" data-bs-toggle="modal" data-bs-target="#editUser">Edit</a>
           </td>
@@ -37,18 +40,20 @@ function updateUserInTable({id, firstName, lastName, age, login, roles}) {
     rowNodes[2].textContent = lastName;
     rowNodes[3].textContent = age;
     rowNodes[4].textContent = login;
-    rowNodes[5].textContent = roles.map(role => role.name).reduce((acc, name) => acc + ' ' + name);
+    rowNodes[5].textContent = roles.map(role => role.name.replace('ROLE_', ''))
+        .reduce((acc, name) => acc + ' ' + name);
 }
 
 async function getAllRoles() {
     const result = await fetch('/api/v1/admin/roles');
     const roles = await result.json();
+    const shortRoles = roles.map(role => ({id: role.id, name: role.name.replace('ROLE_', '')}));
 
     const createCheckbox = document.getElementById('createCheckbox');
     const updateCheckbox = document.getElementById('updateCheckbox');
     const deleteCheckbox = document.getElementById('deleteCheckbox');
 
-    roles.forEach(role => {
+    shortRoles.forEach(role => {
         addActiveCheckbox(createCheckbox, 'create', role);
         addActiveCheckbox(updateCheckbox, 'update', role);
         addInactiveCheckbox(deleteCheckbox, 'delete', role.name);
@@ -83,7 +88,8 @@ async function getPrincipal() {
     rowValues[2].textContent = principal.lastName;
     rowValues[3].textContent = principal.age;
     rowValues[4].textContent = principal.login;
-    rowValues[5].textContent = principal.roles.map(role => role.name).reduce((acc, name) => acc + ' ' + name);
+    rowValues[5].textContent = principal.roles.map(role => role.name.replace('ROLE_', ''))
+        .reduce((acc, name) => acc + ' ' + name);
 }
 
 document.getElementById('users').addEventListener('click', event => {
@@ -167,6 +173,8 @@ document.getElementById('editUserForm').addEventListener('submit', async event =
     const roles = Array.from(rolesEl)
         .filter(role => role.checked)
         .map(role => ({id: role.dataset.roleId, name: role.dataset.roleName}));
+
+    console.log(roles);
 
     const csrfToken = document.querySelector("[name='_csrf']");
 

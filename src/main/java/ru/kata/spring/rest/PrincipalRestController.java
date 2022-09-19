@@ -1,5 +1,7 @@
 package ru.kata.spring.rest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +13,12 @@ import ru.kata.spring.model.User;
 public class PrincipalRestController {
 
     @GetMapping
-    public User getPrincipal() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<User> getPrincipal() {
+        return new ResponseEntity<>(
+                (User) SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getPrincipal(),
+                HttpStatus.OK
+        );
     }
 }

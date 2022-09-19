@@ -1,6 +1,7 @@
 package ru.kata.spring.rest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,35 +25,34 @@ public class AdminRestController {
     }
 
     @GetMapping("/users")
-    public List<User> findAll() {
-        return userService.findAll();
+    public ResponseEntity<List<User>> findAll() {
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")
-    public User findById(@PathVariable Long id) {
-        return userService.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public ResponseEntity<User> findById(@PathVariable Long id) {
+        var user = userService.findById(id).orElse(null);
+        return user == null ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/roles")
-    public List<Role> findAllRoles() {
-        return roleService.findAll();
+    public ResponseEntity<List<Role>> findAllRoles() {
+        return new ResponseEntity<>(roleService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/users")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user) {
-        return userService.create(user);
+    public ResponseEntity<User> create(@RequestBody User user) {
+        return new ResponseEntity<>(userService.create(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/users/{id}")
-    public User update(@RequestBody User user) {
-        return userService.update(user);
+    public ResponseEntity<User> update(@RequestBody User user) {
+        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -22,8 +22,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .anonymous()
                 .disable()
-//                .csrf()
-//                .disable()
                 .authorizeHttpRequests(
                         urlConfig -> urlConfig
                                 .antMatchers("/js/**", "/styles/css/**")

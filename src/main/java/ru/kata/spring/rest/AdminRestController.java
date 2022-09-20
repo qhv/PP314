@@ -2,9 +2,7 @@ package ru.kata.spring.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import ru.kata.spring.model.Role;
 import ru.kata.spring.model.User;
 import ru.kata.spring.service.RoleService;
@@ -53,6 +51,6 @@ public class AdminRestController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
